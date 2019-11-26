@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+const SECRET = 'xhgbdjmß';
 const Helper = {
   hashPassword(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
@@ -17,7 +18,7 @@ const Helper = {
     const token = jwt.sign({
       userId: id,
     },
-    process.env.SECRET, { expiresIn: '7d' },
+    SECRET, { expiresIn: '7d' },
     // eslint-disable-next-line function-paren-newline
     );
     return token;

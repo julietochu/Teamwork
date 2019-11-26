@@ -83,6 +83,41 @@ const Gifs = {
       );
     });
   },
+  async delete(req, res) {
+    const deleteQuery = 'DELETE FROM gifs WHERE id=$1  returning *';
+    const values = [
+      req.params.id,
+    ];
+    try {
+      const { rows } = await db.query(deleteQuery, values);
+      console.log(rows);
+      if (!rows[0]) {
+        return res.status(404).send({ gif: 'gif not found' });
+      }
+      return res.status(200).send({ gif: 'deleted' });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send(error);
+    }
+  },
+  async viewOne(req, res) {
+    const findOneQuery = 'SELECT * FROM gifs WHERE id=$1';
+    const values = [
+      req.params.id,
+    ];
+    console.log(values);
+    try {
+      const { rows } = await db.query(findOneQuery, values);
+      if (!rows[0]) {
+        return res.status(404).send({ messsage: 'gif not found' });
+      }
+      return res.status(200).send(rows[0]);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  },
+
+
 };
 
 export default Gifs;
